@@ -1,4 +1,6 @@
-- Make layout choose
-- Make popup
-- Make to work on chrome://newtab
-- Make chrome://newtab to tap on search field
+- [] Make layout choose
+- [] Make popup
+- [] Make to work on chrome://newtab
+- [] Make chrome://newtab to tap on search field
+- [x] Make to choose the same selection
+- [x] Make to work on hotkey

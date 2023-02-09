@@ -8,6 +8,7 @@
     "tabs",
     "activeTab"
   ],
+
   "background": {
     "service_worker": "background.js"
   },
@@ -21,8 +22,8 @@
   "commands": {
     "transliterate": {
       "suggested_key": {
-        "default": "Ctrl+Y",
-        "mac": "Command+Y"
+        "default": "Ctrl+B",
+        "mac": "Command+B"
       },
       "description": "Transliterates selected text"
     }

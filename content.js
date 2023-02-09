@@ -145,13 +145,18 @@ var letters = {
 
 
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
+    if (request.action === "command") {
+        console.log(request.command);
+    }
     if (request.action === "transliterate") {
         // Get the input element
         const inputField = document.activeElement;
         var selectedText = "";
+        const start = inputField.selectionStart;
+        const end = inputField.selectionEnd;
 
         if (inputField.tagName === "TEXTAREA" || (inputField.tagName === "INPUT" && inputField.type === "text")) {
-            selectedText = inputField.value.substring(inputField.selectionStart, inputField.selectionEnd);
+            selectedText = inputField.value.substring(start, end);
         } else {
             var selection = window.getSelection();
             if (selection.rangeCount > 0) {
@@ -180,6 +185,7 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
         }
         console.log(transliteratedText);
 
-        inputField.value = inputField.value.substring(0, inputField.selectionStart) + transliteratedText + inputField.value.substring(inputField.selectionEnd);
+        inputField.value = inputField.value.substring(0, start) + transliteratedText + inputField.value.substring(end);
+        inputField.setSelectionRange(start, end);
     }
 });
