@@ -1,0 +1,30 @@
+{
+  "manifest_version": 3,
+  "name": "Transliterate Extension",
+  "description": "Transliterates selected text based on letters.json or inverseLetters.json",
+  "version": "1.0",
+  "permissions": [
+    "contextMenus",
+    "tabs",
+    "activeTab"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "js": ["content.js"],
+      "matches": ["<all_urls>"]
+    }
+  ],
+
+  "commands": {
+    "transliterate": {
+      "suggested_key": {
+        "default": "Ctrl+Y",
+        "mac": "Command+Y"
+      },
+      "description": "Transliterates selected text"
+    }
+  }
+}
