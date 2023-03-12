@@ -68,7 +68,10 @@ var inverseLetters = {
     "#": "№",
     "$": ";",
     "^": ":",
-    "&": "?"
+    ":": "Ж",
+    "&": "?",
+    "\"": "Є",
+    ";": "ж"
 };
 
 var letters = {
@@ -140,7 +143,9 @@ var letters = {
     "№": "#",
     ";": "$",
     ":": "^",
-    "?": "&"
+    "?": "&",
+    "Ж": ":",
+    "Є": "\""
 };
 
 
@@ -149,13 +154,15 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
         console.log(request.command);
     }
     if (request.action === "transliterate") {
+        console.log("transliterate")
         // Get the input element
         const inputField = document.activeElement;
         var selectedText = "";
         const start = inputField.selectionStart;
         const end = inputField.selectionEnd;
 
-        if (inputField.tagName === "TEXTAREA" || (inputField.tagName === "INPUT" && inputField.type === "text")) {
+        if (inputField.tagName === "TEXTAREA" || 
+            inputField.tagName === "INPUT") {
             selectedText = inputField.value.substring(start, end);
         } else {
             var selection = window.getSelection();
@@ -187,5 +194,43 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
 
         inputField.value = inputField.value.substring(0, start) + transliteratedText + inputField.value.substring(end);
         inputField.setSelectionRange(start, end);
+    }
+
+    if (request.action === "transliteratefull") {
+        console.log("transliterate")
+        // Get the input element
+        var inputField = document.activeElement;
+        if (window.location.hostname === "www.google.com")
+        {
+            inputField = document.querySelector('input.gLFyf');
+        }
+        var selectedText = "";
+
+        if (inputField.tagName === "TEXTAREA" || 
+            inputField.tagName === "INPUT") {
+            selectedText = inputField.value;
+        }
+
+        console.log(selectedText);
+
+        // Check if selected text contains Cyrillic letters
+        var containsCyrillic = /[\u0400-\u04FF]/.test(selectedText);
+
+        // Use the appropriate letters object
+        var lettersToUse = containsCyrillic ? letters : inverseLetters;
+
+        // Transliterate selected text
+        var transliteratedText = "";
+        for (var i = 0; i < selectedText.length; i++) {
+            var letter = selectedText.charAt(i);
+            if (lettersToUse[letter]) {
+                transliteratedText += lettersToUse[letter];
+            } else {
+                transliteratedText += letter;
+            }
+        }
+        console.log(transliteratedText);
+
+        inputField.value = transliteratedText;
     }
 });
